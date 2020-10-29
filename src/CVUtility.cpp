@@ -46,33 +46,33 @@ void displayMat(const Mat& display) {
   waitKey(0);
 }
 
-void detectSiftMatchWithOpenCV(const char* img1_path, const char* img2_path, MatrixXf &match) {
-  Mat img1 = imread(img1_path);   
-  Mat img2 = imread(img2_path);   
+// void detectSiftMatchWithOpenCV(const char* img1_path, const char* img2_path, MatrixXf &match) {
+//   Mat img1 = imread(img1_path);   
+//   Mat img2 = imread(img2_path);   
 
-  SiftFeatureDetector detector;
-  SiftDescriptorExtractor extractor;
-  vector<KeyPoint> key1;
-  vector<KeyPoint> key2;
-  Mat desc1, desc2;
-  detector.detect(img1, key1);
-  detector.detect(img2, key2);
-  extractor.compute(img1, key1, desc1);
-  extractor.compute(img2, key2, desc2);
+//   SiftFeatureDetector detector;
+//   SiftDescriptorExtractor extractor;
+//   vector<KeyPoint> key1;
+//   vector<KeyPoint> key2;
+//   Mat desc1, desc2;
+//   detector.detect(img1, key1);
+//   detector.detect(img2, key2);
+//   extractor.compute(img1, key1, desc1);
+//   extractor.compute(img2, key2, desc2);
 
-  FlannBasedMatcher matcher;
-  vector<DMatch> matches;
-  matcher.match(desc1, desc2, matches);
+//   FlannBasedMatcher matcher;
+//   vector<DMatch> matches;
+//   matcher.match(desc1, desc2, matches);
 
-  match.resize(matches.size(), 6);
-  cout << "match count: " << matches.size() << endl;
-  for (int i = 0; i < matches.size(); i++) {
-    match(i, 0) = key1[matches[i].queryIdx].pt.x;
-    match(i, 1) = key1[matches[i].queryIdx].pt.y;
-    match(i, 2) = 1;
-    match(i, 3) = key2[matches[i].trainIdx].pt.x;
-    match(i, 4) = key2[matches[i].trainIdx].pt.y;
-    match(i, 5) = 1;
-  }
+//   match.resize(matches.size(), 6);
+//   cout << "match count: " << matches.size() << endl;
+//   for (int i = 0; i < matches.size(); i++) {
+//     match(i, 0) = key1[matches[i].queryIdx].pt.x;
+//     match(i, 1) = key1[matches[i].queryIdx].pt.y;
+//     match(i, 2) = 1;
+//     match(i, 3) = key2[matches[i].trainIdx].pt.x;
+//     match(i, 4) = key2[matches[i].trainIdx].pt.y;
+//     match(i, 5) = 1;
+//   }
   
-}
+// }

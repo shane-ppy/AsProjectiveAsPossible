@@ -111,17 +111,17 @@ void warpAndFuseImage(const Mat &img1, const Mat &img2, const Matrix3f &H, int &
   if (displayResult)
     displayMat(linearFusion);
   if (saveData)
-    imwrite("/home/xinsun/Code/APAP_C/build/Global.jpg", linearFusion);
+    imwrite("/home/shane/feature/AsProjectiveAsPossible/build/Global.jpg", linearFusion);
 }
 
-void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, int offX, int offY, int cw, int ch, const ArrayXf &X, const ArrayXf &Y) {
+void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, int offX, int offY, int cw, int ch, const ArrayXf &X, const ArrayXf &Y, Mat &linearFusion) {
 
   int height = img1.size[0];
   int width = img1.size[1];
 
   Mat warp_img1 = Mat::zeros(ch, cw, CV_8UC3);
   Mat warp_img2 = Mat::zeros(ch, cw, CV_8UC3);
-  Mat linearFusion = Mat::zeros(ch, cw, CV_8UC3); 
+  linearFusion = Mat::zeros(ch, cw, CV_8UC3); 
   img1.copyTo(warp_img1(Rect_<int>(offX, offY, width, height))); 
   uint8_t r, g, b;
   for (int i = 0; i < ch; i++)
@@ -133,7 +133,7 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
       for (xindex = 0; (xindex+1) < X.rows() && j>= X[xindex]; xindex++);
       for (yindex = 0; (yindex+1) < Y.rows() && i>= Y[yindex]; yindex++);
 
-      int Hindex = yindex*Y.rows()+xindex;
+      // int Hindex = yindex*Y.rows()+xindex;
       int Hindex = 0;
       float div = ((j-offX)*H(Hindex, 6)+(i-offY)*H(Hindex, 7)+H(Hindex, 8));
       float x = ((j-offX)*H(Hindex, 0) + (i-offY)*H(Hindex, 1)+H(Hindex, 2))/div;
@@ -163,13 +163,10 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
   if (displayResult)
     displayMat(linearFusion);
   if (saveData)
-    imwrite("/home/xinsun/Code/APAP_C/build/APAP.jpg", linearFusion);
+    imwrite("/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg", linearFusion);
 }
 
-int GlobalHomography(const char *img1_path, const char *img2_path, MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, int &offX, int &offY, int &cw, int &ch, Mat &img1, Mat &img2) {
-
-  img1 = imread(img1_path);
-  img2 = imread(img2_path);
+int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, int &offX, int &offY, int &cw, int &ch, Mat &img1, Mat &img2) {
 
   int height = img1.size[0];
   int width = img1.size[1]; 
@@ -177,13 +174,12 @@ int GlobalHomography(const char *img1_path, const char *img2_path, MatrixXf &inl
 
   //detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
   //detectSiftMatchWithOpenCV(img1_path, img2_path, match);
-  detectSiftMatchWithVLFeat(img1_path, img2_path, match);
+  detectSiftMatchWithVLFeat(img1, img2, match);
 
   normalizeMatch(match, T1, T2);
 
   singleModelRANSAC(match, 500, inlier);
   //multiModelRANSAC(match, 500, inlier);
-  cout << "inlier: " << inlier.rows() << endl;
 
   Matrix3f H;
   fitHomography(inlier.block(0, 0, inlier.rows(), 3), inlier.block(0, 3, inlier.rows(), 3), H, A);
@@ -202,17 +198,18 @@ int GlobalHomography(const char *img1_path, const char *img2_path, MatrixXf &inl
   Matrix3f Hg = T2.inverse()*H*T1;
 
   warpAndFuseImage(img1, img2, Hg, offX, offY, cw, ch);
+  return 0;
 }
 
-void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const Matrix3f &T2, int offX, int offY, int cw, int ch, const Mat &img1, const Mat &img2) {
+void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const Matrix3f &T2, int offX, int offY, int cw, int ch, const Mat &img1, const Mat &img2, Mat &img12) {
 
   // APAP params
   float gamma = 0.1;
   float sigma = 12.f;
   float sigmaSquared = sigma*sigma;
   // Grid parition
-  int GW = 30;
-  int GH = 30;
+  int GW = 80;
+  int GH = 80;
   ArrayXf X = ArrayXf::LinSpaced(GW, 0, cw);
   ArrayXf Y = ArrayXf::LinSpaced(GH, 0, ch);
   ArrayXf MvX = X - offX;
@@ -241,7 +238,7 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
     VectorXf h = V.col(V.cols()-1);
     Hmdlt.row(i) = unrollMatrix3f(inv_T2*rollVector9f(h)*T1);
   }
-  warpAndFuseImageAPAP(img1, img2, Hmdlt, offX, offY, cw, ch, X, Y);
+  warpAndFuseImageAPAP(img1, img2, Hmdlt, offX, offY, cw, ch, X, Y, img12);
 }
 
 struct Data {
@@ -254,16 +251,26 @@ int main() {
 
   MatrixXf inlier, A;
   Matrix3f T1, T2;
-  Mat img1, img2;
+  Mat img1, img2, img3, img12, img123;
   int offX, offY, cw, ch;
-  const char* img1_path = "/home/xinsun/Code/APAP_C/image/set2/u_7_25.jpg";
-  const char* img2_path = "/home/xinsun/Code/APAP_C/image/set2/u_8_25.jpg";
-  //const char* img1_path = "/home/xinsun/Code/RedsunImg/0/u_3_25.jpg";
-  //const char* img2_path = "/home/xinsun/Code/RedsunImg/0/u_4_25.jpg";
-  displayResult = true;
+  // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_7_25.jpg";
+  // const char* img2_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_8_25.jpg";
+  // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg";
+  const char* img1_path = "/home/shane/camera0_cir.jpg";
+  const char* img2_path = "/home/shane/camera2_cir.jpg";
+
+  const char* img3_path = "/home/shane/camera4_cir.jpg";
+  displayResult = false;
   saveData = true;
-  GlobalHomography(img1_path, img2_path, inlier, A, T1, T2, offX, offY, cw, ch, img1, img2);
-  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img2);
+
+  img1 = imread(img1_path);
+  img2 = imread(img2_path);
+  img3 = imread(img3_path);
+
+  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img2);
+  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img2, img12);
+  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img12, img3);
+  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img12, img3, img123);
 
   return 0;
 }

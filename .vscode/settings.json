@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "chrono": "cpp"
+    },
+    "intelOneAPI.analysis.binary-path": "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg",
+    "intelOneAPI.analysis.vtune.install-root": "/opt/intel/oneapi/vtune/latest",
+    "intelOneAPI.analysis.vtune.project-folder": "/home/shane/feature/AsProjectiveAsPossible/vtune"
+}

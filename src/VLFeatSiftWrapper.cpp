@@ -7,14 +7,14 @@ using namespace Eigen;
 using namespace cv;
 using namespace std;
 
-void detectSiftMatchWithVLFeat(const char* img1_path, const char* img2_path, Eigen::MatrixXf &match) {
+void detectSiftMatchWithVLFeat(Mat &img1, Mat &img2, Eigen::MatrixXf &match) {
 
   int *m = 0;
   double *kp1 = 0, *kp2 = 0;
   vl_uint8 *desc1 = 0, *desc2 = 0;
 
-  int nkp1 = detectSiftAndCalculateDescriptor(img1_path, kp1, desc1);
-  int nkp2 = detectSiftAndCalculateDescriptor(img2_path, kp2, desc2);
+  int nkp1 = detectSiftAndCalculateDescriptor(img1, kp1, desc1);
+  int nkp2 = detectSiftAndCalculateDescriptor(img2, kp2, desc2);
   cout << "num kp1: " << nkp1 << endl;
   cout << "num kp2: " << nkp2 << endl;
   int nmatch = matchDescriptorWithRatioTest(desc1, desc2, nkp1, nkp2, m);
@@ -33,9 +33,9 @@ void detectSiftMatchWithVLFeat(const char* img1_path, const char* img2_path, Eig
   free(m);
 }
 
-int detectSiftAndCalculateDescriptor(const char* img_path, double* &kp, vl_uint8* &descr) {
-
-  Mat img = imread(img_path, CV_LOAD_IMAGE_GRAYSCALE);
+int detectSiftAndCalculateDescriptor(Mat &img1, double* &kp, vl_uint8* &descr) {
+  Mat img;
+  cvtColor(img1, img, COLOR_BGR2GRAY);
   int height = img.size[0];
   int width = img.size[1];
   float *data = (float*) malloc(height*width*sizeof(float));

@@ -1,8 +1,11 @@
 #pragma once
 
 #include "sift.h"
+#include <opencv2/opencv.hpp>
 #include <Eigen/Dense>
 
-void detectSiftMatchWithVLFeat(const char* img1_path, const char* img2_path, Eigen::MatrixXf &match);
-int detectSiftAndCalculateDescriptor(const char* img_path, double* &kp, vl_uint8* &descr);
+using namespace cv;
+
+void detectSiftMatchWithVLFeat(Mat &img1, Mat &img2, Eigen::MatrixXf &match);
+int detectSiftAndCalculateDescriptor(Mat &img1, double* &kp, vl_uint8* &descr);
 int matchDescriptorWithRatioTest(const vl_uint8 *desc1, const vl_uint8 *desc2, int N1, int N2, int* &match);

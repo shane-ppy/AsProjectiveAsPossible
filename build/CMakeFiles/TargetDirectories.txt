@@ -1,0 +1,3 @@
+/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/rebuild_cache.dir
+/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/edit_cache.dir
+/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir
