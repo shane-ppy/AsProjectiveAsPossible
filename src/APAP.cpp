@@ -37,38 +37,44 @@ void warpAndFuseImage(const Mat &img1, const Mat &img2, const Matrix3f &H, int &
   int height = img1.size[0];
   int width = img1.size[1];
 
-  Vector3f TL = H.inverse()*(VectorXf(3) << 0, 0, 1).finished();
-  Vector3f TR = H.inverse()*(VectorXf(3) << width-1, 0, 1).finished();
-  Vector3f BL = H.inverse()*(VectorXf(3) << 0, height-1, 1).finished();
-  Vector3f BR = H.inverse()*(VectorXf(3) << width-1, height-1, 1).finished();
-  noHomogeneous(TL);
-  noHomogeneous(TR);
-  noHomogeneous(BL);
-  noHomogeneous(BR);
-  vector<int> xSet(6);
-  vector<int> ySet(6);
-  xSet[0] = static_cast<int>(TL[0]);
-  xSet[1] = static_cast<int>(TR[0]);
-  xSet[2] = static_cast<int>(BL[0]);
-  xSet[3] = static_cast<int>(BR[0]);
-  xSet[4] = 0;
-  xSet[5] = width;
-  ySet[0] = static_cast<int>(TL[1]);
-  ySet[1] = static_cast<int>(TR[1]);
-  ySet[2] = static_cast<int>(BL[1]);
-  ySet[3] = static_cast<int>(BR[1]);
-  ySet[4] = 0;
-  ySet[5] = height;
-  int minX = minOfSet(xSet);
-  int maxX = maxOfSet(xSet);
-  int minY = minOfSet(ySet);
-  int maxY = maxOfSet(ySet);
+  // Vector3f TL = H.inverse()*(VectorXf(3) << 0, 0, 1).finished();
+  // Vector3f TR = H.inverse()*(VectorXf(3) << width-1, 0, 1).finished();
+  // Vector3f BL = H.inverse()*(VectorXf(3) << 0, height-1, 1).finished();
+  // Vector3f BR = H.inverse()*(VectorXf(3) << width-1, height-1, 1).finished();
+  // noHomogeneous(TL);
+  // noHomogeneous(TR);
+  // noHomogeneous(BL);
+  // noHomogeneous(BR);
+  // vector<int> xSet(6);
+  // vector<int> ySet(6);
+  // xSet[0] = static_cast<int>(TL[0]);
+  // xSet[1] = static_cast<int>(TR[0]);
+  // xSet[2] = static_cast<int>(BL[0]);
+  // xSet[3] = static_cast<int>(BR[0]);
+  // xSet[4] = 0;
+  // xSet[5] = width;
+  // ySet[0] = static_cast<int>(TL[1]);
+  // ySet[1] = static_cast<int>(TR[1]);
+  // ySet[2] = static_cast<int>(BL[1]);
+  // ySet[3] = static_cast<int>(BR[1]);
+  // ySet[4] = 0;
+  // ySet[5] = height;
+  // int minX = minOfSet(xSet);
+  // int maxX = maxOfSet(xSet);
+  // int minY = minOfSet(ySet);
+  // int maxY = maxOfSet(ySet);
 
-  offX = -minX;
-  offY = -minY;
+  int minX = 0;
+  int minY = 0;
 
-  cw = maxX - minX;
-  ch = maxY - minY;
+  // offX = -minX;
+  // offY = -minY;
+
+  // cw = maxX - minX;
+  // ch = maxY - minY;
+
+  // cw = width;
+  // ch = height;
   Mat warp_img1 = Mat::zeros(ch, cw, CV_8UC3);
   Mat warp_img2 = Mat::zeros(ch, cw, CV_8UC3);
   Mat linearFusion = Mat::zeros(ch, cw, CV_8UC3); img1.copyTo(warp_img1(Rect_<int>(-minX, -minY, width, height))); uint8_t r, g, b;
@@ -97,9 +103,9 @@ void warpAndFuseImage(const Mat &img1, const Mat &img2, const Matrix3f &H, int &
       Vec3b img2Color = warp_img2.at<Vec3b>(i, j);
       int leftWeight = 1;
       int rightWeight = 1;
-      if (img1Color[0] == 0 && img1Color[1] == 0 && img1Color[2] == 0)
+      if (img1Color[0] < 10 && img1Color[1] < 10 && img1Color[2] < 10)
         leftWeight = 0;
-      if (img2Color[0] == 0 && img2Color[1] == 0 && img2Color[2] == 0)
+      if (img2Color[0] < 10 && img2Color[1] < 10 && img2Color[2] < 10)
         rightWeight = 0;
       if (leftWeight + rightWeight != 0) {
         r = static_cast<uint8_t>(img1Color[0]*leftWeight/(leftWeight+rightWeight)+img2Color[0]*rightWeight/(leftWeight+rightWeight));
@@ -133,8 +139,8 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
       for (xindex = 0; (xindex+1) < X.rows() && j>= X[xindex]; xindex++);
       for (yindex = 0; (yindex+1) < Y.rows() && i>= Y[yindex]; yindex++);
 
-      // int Hindex = yindex*Y.rows()+xindex;
-      int Hindex = 0;
+      int Hindex = yindex*Y.rows()+xindex;
+      // int Hindex = 0;
       float div = ((j-offX)*H(Hindex, 6)+(i-offY)*H(Hindex, 7)+H(Hindex, 8));
       float x = ((j-offX)*H(Hindex, 0) + (i-offY)*H(Hindex, 1)+H(Hindex, 2))/div;
       float y = ((j-offX)*H(Hindex, 3) + (i-offY)*H(Hindex, 4)+H(Hindex, 5))/div;
@@ -149,9 +155,9 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
       Vec3b img2Color = warp_img2.at<Vec3b>(i, j);
       int leftWeight = 1;
       int rightWeight = 1;
-      if (img1Color[0] == 0 && img1Color[1] == 0 && img1Color[2] == 0)
+      if (img1Color[0] < 10 && img1Color[1] < 10 && img1Color[2] < 10)
         leftWeight = 0;
-      if (img2Color[0] == 0 && img2Color[1] == 0 && img2Color[2] == 0)
+      if (img2Color[0] < 10 && img2Color[1] < 10 && img2Color[2] < 10)
         rightWeight = 0;
       if (leftWeight + rightWeight != 0) {
         r = static_cast<uint8_t>(img1Color[0]*leftWeight/(leftWeight+rightWeight)+img2Color[0]*rightWeight/(leftWeight+rightWeight));
@@ -208,8 +214,8 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
   float sigma = 12.f;
   float sigmaSquared = sigma*sigma;
   // Grid parition
-  int GW = 80;
-  int GH = 80;
+  int GW = 100;
+  int GH = 100;
   ArrayXf X = ArrayXf::LinSpaced(GW, 0, cw);
   ArrayXf Y = ArrayXf::LinSpaced(GH, 0, ch);
   ArrayXf MvX = X - offX;
@@ -252,13 +258,17 @@ int main() {
   MatrixXf inlier, A;
   Matrix3f T1, T2;
   Mat img1, img2, img3, img12, img123;
-  int offX, offY, cw, ch;
+  int offX = 0; 
+  int offY = 0; 
+  int cw = 860;
+  int ch = 860;
+  // int offX, offY, cw, ch;
+
   // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_7_25.jpg";
   // const char* img2_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_8_25.jpg";
   // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg";
   const char* img1_path = "/home/shane/camera0_cir.jpg";
   const char* img2_path = "/home/shane/camera2_cir.jpg";
-
   const char* img3_path = "/home/shane/camera4_cir.jpg";
   displayResult = false;
   saveData = true;
