@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/shane/feature/AsProjectiveAsPossible/build"
+			"value" : "/home/shane/stitching/AsProjectiveAsPossible/build"
 		},
 		{
 			"name" : "APAP_SOURCE_DIR",
@@ -23,7 +23,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/shane/feature/AsProjectiveAsPossible"
+			"value" : "/home/shane/stitching/AsProjectiveAsPossible"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -64,10 +64,6 @@
 				{
 					"name" : "HELPSTRING",
 					"value" : "No help, variable specified on the command line."
-				},
-				{
-					"name" : "STRINGS",
-					"value" : "Release"
 				}
 			],
 			"type" : "STRING",
@@ -83,7 +79,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/shane/feature/AsProjectiveAsPossible/build"
+			"value" : "/home/shane/stitching/AsProjectiveAsPossible/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -148,18 +144,6 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "/usr/bin/cmake"
-		},
-		{
-			"name" : "CMAKE_CONFIGURATION_TYPES",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Configs"
-				}
-			],
-			"type" : "STRING",
-			"value" : "Release"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -247,7 +231,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "-pg"
+			"value" : ""
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS_DEBUG",
@@ -458,6 +442,18 @@
 			"value" : "CMAKE_DLLTOOL-NOTFOUND"
 		},
 		{
+			"name" : "CMAKE_EDIT_COMMAND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to cache edit program executable."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "/usr/bin/cmake-gui"
+		},
+		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
 			"properties" : 
 			[
@@ -635,7 +631,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/shane/feature/AsProjectiveAsPossible"
+			"value" : "/home/shane/stitching/AsProjectiveAsPossible"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1219,7 +1215,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/usr][v4.2.0()]"
+			"value" : "[/usr/local][v3.4.12(3.4)]"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_OpenGL",
@@ -1232,6 +1228,42 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "[/usr/lib/x86_64-linux-gnu/libOpenGL.so][/usr/lib/x86_64-linux-gnu/libGLX.so][/usr/include][c ][v()]"
+		},
+		{
+			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_OpenMP",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Details about finding OpenMP"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "[TRUE][TRUE][c ][v()]"
+		},
+		{
+			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Details about finding OpenMP_C"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "[-fopenmp][/usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so][/usr/lib/x86_64-linux-gnu/libpthread.so][v()]"
+		},
+		{
+			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Details about finding OpenMP_CXX"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "[-fopenmp][/usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so][/usr/lib/x86_64-linux-gnu/libpthread.so][v()]"
 		},
 		{
 			"name" : "GLEW_DIR",
@@ -1438,6 +1470,78 @@
 			"value" : "/usr/lib/x86_64-linux-gnu/libIL.so"
 		},
 		{
+			"name" : "OPENCL_VERSION_1_0",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have symbol CL_VERSION_1_0"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "OPENCL_VERSION_1_1",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have symbol CL_VERSION_1_1"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "OPENCL_VERSION_1_2",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have symbol CL_VERSION_1_2"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "OPENCL_VERSION_2_0",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have symbol CL_VERSION_2_0"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "OPENCL_VERSION_2_1",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have symbol CL_VERSION_2_1"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "OPENCL_VERSION_2_2",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have symbol CL_VERSION_2_2"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
 			"name" : "OPENGL_EGL_INCLUDE_DIR",
 			"properties" : 
 			[
@@ -1582,6 +1686,30 @@
 			"value" : "OPENGL_xmesa_INCLUDE_DIR-NOTFOUND"
 		},
 		{
+			"name" : "OpenCL_INCLUDE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "OpenCL_INCLUDE_DIR-NOTFOUND"
+		},
+		{
+			"name" : "OpenCL_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "OpenCL_LIBRARY-NOTFOUND"
+		},
+		{
 			"name" : "OpenCV_DIR",
 			"properties" : 
 			[
@@ -1591,7 +1719,175 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/usr/lib/x86_64-linux-gnu/cmake/opencv4"
+			"value" : "/usr/local/share/OpenCV"
+		},
+		{
+			"name" : "OpenMP_COMPILE_RESULT_CXX_fopenmp",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "TRUE"
+		},
+		{
+			"name" : "OpenMP_COMPILE_RESULT_C_fopenmp",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "TRUE"
+		},
+		{
+			"name" : "OpenMP_CXX_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "CXX compiler flags for OpenMP parallelization"
+				}
+			],
+			"type" : "STRING",
+			"value" : "-fopenmp"
+		},
+		{
+			"name" : "OpenMP_CXX_LIB_NAMES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "CXX compiler libraries for OpenMP parallelization"
+				}
+			],
+			"type" : "STRING",
+			"value" : "gomp;pthread"
+		},
+		{
+			"name" : "OpenMP_CXX_SPEC_DATE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "CXX compiler's OpenMP specification date"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "201511"
+		},
+		{
+			"name" : "OpenMP_C_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "C compiler flags for OpenMP parallelization"
+				}
+			],
+			"type" : "STRING",
+			"value" : "-fopenmp"
+		},
+		{
+			"name" : "OpenMP_C_LIB_NAMES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "C compiler libraries for OpenMP parallelization"
+				}
+			],
+			"type" : "STRING",
+			"value" : "gomp;pthread"
+		},
+		{
+			"name" : "OpenMP_C_SPEC_DATE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "C compiler's OpenMP specification date"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "201511"
+		},
+		{
+			"name" : "OpenMP_SPECTEST_CXX_",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "TRUE"
+		},
+		{
+			"name" : "OpenMP_SPECTEST_C_",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "TRUE"
+		},
+		{
+			"name" : "OpenMP_gomp_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to the gomp library for OpenMP"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so"
+		},
+		{
+			"name" : "OpenMP_pthread_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to the pthread library for OpenMP"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/usr/lib/x86_64-linux-gnu/libpthread.so"
 		}
 	],
 	"kind" : "cache",

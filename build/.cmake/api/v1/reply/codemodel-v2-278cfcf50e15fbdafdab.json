@@ -38,7 +38,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "APAP::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-APAP-Release-d42e5d9ae43d4d41279a.json",
+					"jsonFile" : "target-APAP-Release-309ab37ff8da4a69b080.json",
 					"name" : "APAP",
 					"projectIndex" : 0
 				}
@@ -48,8 +48,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/shane/feature/AsProjectiveAsPossible/build",
-		"source" : "/home/shane/feature/AsProjectiveAsPossible"
+		"build" : "/home/shane/stitching/AsProjectiveAsPossible/build",
+		"source" : "/home/shane/stitching/AsProjectiveAsPossible"
 	},
 	"version" : 
 	{

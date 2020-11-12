@@ -117,7 +117,7 @@ void warpAndFuseImage(const Mat &img1, const Mat &img2, const Matrix3f &H, int &
   if (displayResult)
     displayMat(linearFusion);
   if (saveData)
-    imwrite("/home/shane/feature/AsProjectiveAsPossible/build/Global.jpg", linearFusion);
+    imwrite("/home/shane/stitching/AsProjectiveAsPossible/build/Global.jpg", linearFusion);
 }
 
 void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, int offX, int offY, int cw, int ch, const ArrayXf &X, const ArrayXf &Y, Mat &linearFusion) {
@@ -169,7 +169,7 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
   if (displayResult)
     displayMat(linearFusion);
   if (saveData)
-    imwrite("/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg", linearFusion);
+    imwrite("/home/shane/stitching/AsProjectiveAsPossible/build/APAP.jpg", linearFusion);
 }
 
 int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, int &offX, int &offY, int &cw, int &ch, Mat &img1, Mat &img2) {
@@ -177,16 +177,15 @@ int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, 
   int height = img1.size[0];
   int width = img1.size[1]; 
   MatrixXf match;
-
-  //detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
-  //detectSiftMatchWithOpenCV(img1_path, img2_path, match);
-  detectSiftMatchWithVLFeat(img1, img2, match);
+  detectSiftMatchWithOpenCV(img1, img2, match);
+  // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
+  // detectSiftMatchWithVLFeat(img1, img2, match);
+  // detectSiftMatchWithROCm(img1, img2, match1);
 
   normalizeMatch(match, T1, T2);
 
   singleModelRANSAC(match, 500, inlier);
-  //multiModelRANSAC(match, 500, inlier);
-
+  // multiModelRANSAC(match, 500, inlier);
   Matrix3f H;
   fitHomography(inlier.block(0, 0, inlier.rows(), 3), inlier.block(0, 3, inlier.rows(), 3), H, A);
 
@@ -202,7 +201,7 @@ int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, 
   }
 
   Matrix3f Hg = T2.inverse()*H*T1;
-
+  
   warpAndFuseImage(img1, img2, Hg, offX, offY, cw, ch);
   return 0;
 }
@@ -214,8 +213,8 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
   float sigma = 12.f;
   float sigmaSquared = sigma*sigma;
   // Grid parition
-  int GW = 100;
-  int GH = 100;
+  int GW = 60;
+  int GH = 60;
   ArrayXf X = ArrayXf::LinSpaced(GW, 0, cw);
   ArrayXf Y = ArrayXf::LinSpaced(GH, 0, ch);
   ArrayXf MvX = X - offX;
@@ -223,14 +222,16 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
 
   MatrixXf Hmdlt = MatrixXf::Zero(GW*GH, 9);
   MatrixXf pts1 = (T1.inverse()*inlier.block(0, 0, inlier.rows(), 3).transpose()).transpose();
-  MatrixXf pts2 = (T2.inverse()*inlier.block(0, 3, inlier.rows(), 3).transpose()).transpose();
-  MatrixXf Wi(pts1.rows()*2, pts1.rows()*2);
+  // MatrixXf pts2 = (T2.inverse()*inlier.block(0, 3, inlier.rows(), 3).transpose()).transpose();
   Matrix3f inv_T2 = T2.inverse();
-  Wi.setZero();
-  for (int i = 0; i < GW*GH - 1; i++) {
 
+  #pragma omp parallel for shared(Hmdlt) num_threads(6)
+  for (int i = 0; i < GW*GH - 1; i++) {
+    MatrixXf Wi(pts1.rows()*2, pts1.rows()*2);
+    Wi.setZero();
     float localX = MvX(i%GW);
     float localY = MvY(i/GW);
+    
     for (int j = 0; j < pts1.rows(); j++) {
       float dist_weight = exp(-pdist2(localX, localY, pts1(j, 0), pts1(j, 1))/sigmaSquared);
       float weight = max(dist_weight, gamma);
@@ -239,11 +240,13 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
     }
 
     // Solve for SVD
+    // cout << (Wi * A).rows() << ", " << (Wi * A).cols() << endl;
     JacobiSVD<MatrixXf, HouseholderQRPreconditioner> svd(Wi*A, ComputeFullV);
     MatrixXf V = svd.matrixV();
     VectorXf h = V.col(V.cols()-1);
     Hmdlt.row(i) = unrollMatrix3f(inv_T2*rollVector9f(h)*T1);
   }
+  
   warpAndFuseImageAPAP(img1, img2, Hmdlt, offX, offY, cw, ch, X, Y, img12);
 }
 
@@ -254,10 +257,10 @@ struct Data {
 };
 
 int main() {
-
+  auto t1 = chrono::high_resolution_clock::now();
   MatrixXf inlier, A;
   Matrix3f T1, T2;
-  Mat img1, img2, img3, img12, img123;
+  Mat img1, img2, img3, img23, img123;
   int offX = 0; 
   int offY = 0; 
   int cw = 860;
@@ -277,10 +280,14 @@ int main() {
   img2 = imread(img2_path);
   img3 = imread(img3_path);
 
-  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img2);
-  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img2, img12);
-  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img12, img3);
-  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img12, img3, img123);
+  
+  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3);
+  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23);
+  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23);
+  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23, img123);
+  auto t2 = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+  cout << duration << endl;
 
   return 0;
 }

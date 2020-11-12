@@ -4,11 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/shane/feature/AsProjectiveAsPossible/src/APAP.cpp" "/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/APAP.cpp.o"
-  "/home/shane/feature/AsProjectiveAsPossible/src/CVUtility.cpp" "/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/CVUtility.cpp.o"
-  "/home/shane/feature/AsProjectiveAsPossible/src/Math.cpp" "/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/Math.cpp.o"
-  "/home/shane/feature/AsProjectiveAsPossible/src/SiftGPUWrapper.cpp" "/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/SiftGPUWrapper.cpp.o"
-  "/home/shane/feature/AsProjectiveAsPossible/src/VLFeatSiftWrapper.cpp" "/home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/VLFeatSiftWrapper.cpp.o"
+  "/home/shane/stitching/AsProjectiveAsPossible/src/APAP.cpp" "/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/APAP.cpp.o"
+  "/home/shane/stitching/AsProjectiveAsPossible/src/CVUtility.cpp" "/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/CVUtility.cpp.o"
+  "/home/shane/stitching/AsProjectiveAsPossible/src/Math.cpp" "/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/Math.cpp.o"
+  "/home/shane/stitching/AsProjectiveAsPossible/src/SiftGPUWrapper.cpp" "/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/SiftGPUWrapper.cpp.o"
+  "/home/shane/stitching/AsProjectiveAsPossible/src/SiftROCm.cpp" "/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/SiftROCm.cpp.o"
+  "/home/shane/stitching/AsProjectiveAsPossible/src/VLFeatSiftWrapper.cpp" "/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir/src/VLFeatSiftWrapper.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -18,7 +19,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/eigen3"
   "../thirdparty/vlfeat/include"
   "../thirdparty/SiftGPU/include"
-  "/usr/include/opencv4"
+  "/opt/rocm/mivisionx/include"
+  "/usr/local/include/opencv"
   )
 
 # Targets to which this target links.

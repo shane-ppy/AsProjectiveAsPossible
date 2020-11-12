@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/APAP.dir/src/CVUtility.cpp.o"
   "CMakeFiles/APAP.dir/src/Math.cpp.o"
   "CMakeFiles/APAP.dir/src/SiftGPUWrapper.cpp.o"
+  "CMakeFiles/APAP.dir/src/SiftROCm.cpp.o"
   "CMakeFiles/APAP.dir/src/VLFeatSiftWrapper.cpp.o"
 )
 

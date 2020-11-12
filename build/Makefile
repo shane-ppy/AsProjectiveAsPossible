@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/shane/feature/AsProjectiveAsPossible
+CMAKE_SOURCE_DIR = /home/shane/stitching/AsProjectiveAsPossible
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/shane/feature/AsProjectiveAsPossible/build
+CMAKE_BINARY_DIR = /home/shane/stitching/AsProjectiveAsPossible/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/cmake-gui -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles /home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/shane/feature/AsProjectiveAsPossible/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -231,6 +231,33 @@ src/SiftGPUWrapper.cpp.s:
 	$(MAKE) -f CMakeFiles/APAP.dir/build.make CMakeFiles/APAP.dir/src/SiftGPUWrapper.cpp.s
 .PHONY : src/SiftGPUWrapper.cpp.s
 
+src/SiftROCm.o: src/SiftROCm.cpp.o
+
+.PHONY : src/SiftROCm.o
+
+# target to build an object file
+src/SiftROCm.cpp.o:
+	$(MAKE) -f CMakeFiles/APAP.dir/build.make CMakeFiles/APAP.dir/src/SiftROCm.cpp.o
+.PHONY : src/SiftROCm.cpp.o
+
+src/SiftROCm.i: src/SiftROCm.cpp.i
+
+.PHONY : src/SiftROCm.i
+
+# target to preprocess a source file
+src/SiftROCm.cpp.i:
+	$(MAKE) -f CMakeFiles/APAP.dir/build.make CMakeFiles/APAP.dir/src/SiftROCm.cpp.i
+.PHONY : src/SiftROCm.cpp.i
+
+src/SiftROCm.s: src/SiftROCm.cpp.s
+
+.PHONY : src/SiftROCm.s
+
+# target to generate assembly for a file
+src/SiftROCm.cpp.s:
+	$(MAKE) -f CMakeFiles/APAP.dir/build.make CMakeFiles/APAP.dir/src/SiftROCm.cpp.s
+.PHONY : src/SiftROCm.cpp.s
+
 src/VLFeatSiftWrapper.o: src/VLFeatSiftWrapper.cpp.o
 
 .PHONY : src/VLFeatSiftWrapper.o
@@ -279,6 +306,9 @@ help:
 	@echo "... src/SiftGPUWrapper.o"
 	@echo "... src/SiftGPUWrapper.i"
 	@echo "... src/SiftGPUWrapper.s"
+	@echo "... src/SiftROCm.o"
+	@echo "... src/SiftROCm.i"
+	@echo "... src/SiftROCm.s"
 	@echo "... src/VLFeatSiftWrapper.o"
 	@echo "... src/VLFeatSiftWrapper.i"
 	@echo "... src/VLFeatSiftWrapper.s"

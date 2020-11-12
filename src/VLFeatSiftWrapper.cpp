@@ -17,6 +17,14 @@ void detectSiftMatchWithVLFeat(Mat &img1, Mat &img2, Eigen::MatrixXf &match) {
   int nkp2 = detectSiftAndCalculateDescriptor(img2, kp2, desc2);
   cout << "num kp1: " << nkp1 << endl;
   cout << "num kp2: " << nkp2 << endl;
+
+  // Mat output;
+  // cvtColor(img1, output, COLOR_RGB2GRAY);
+  // for (int i = 0; i < nkp1; i++) {
+  //   cv::Point center (kp1[i*4+1], kp1[i*4+0]);
+  //   cv::circle (output, center, 1, cv::Scalar(255,255, 255),2);
+  // }
+
   int nmatch = matchDescriptorWithRatioTest(desc1, desc2, nkp1, nkp2, m);
   cout << "num match: " << nmatch << endl;
   match.resize(nmatch, 6);
@@ -24,7 +32,12 @@ void detectSiftMatchWithVLFeat(Mat &img1, Mat &img2, Eigen::MatrixXf &match) {
     int index1 = m[i*2+0];
     int index2 = m[i*2+1];
     match.row(i) << kp1[index1*4+1], kp1[index1*4+0], 1, kp2[index2*4+1], kp2[index2*4+0], 1;
+    // cv::Point center (kp2[index2*4+1], kp2[index2*4+0]);
+    // cv::circle (output, center, 1, cv::Scalar(255,255, 255),2);
   }
+
+  // imshow( "OrbDetect", output );
+  // waitKey(0);
 
   free(kp1);
   free(kp2);
@@ -103,6 +116,7 @@ int detectSiftAndCalculateDescriptor(Mat &img1, double* &kp, vl_uint8* &descr) {
           kp = (double*) realloc(kp, 4*sizeof(double)*reserved);
           descr = (vl_uint8*) realloc(descr, 128*sizeof(vl_uint8)*reserved);
         }
+        // std::cout << k->y+1 << ", " << k->x+1 << ", " << k->sigma << ", " << M_PI/2-angles[q] << std::endl;
         kp[4*nkp+0] = k->y+1;
         kp[4*nkp+1] = k->x+1;
         kp[4*nkp+2] = k->sigma;
