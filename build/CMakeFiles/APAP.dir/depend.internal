@@ -658,14 +658,6 @@ CMakeFiles/APAP.dir/src/SiftROCm.cpp.o
  /home/shane/stitching/AsProjectiveAsPossible/src/SiftROCm.cpp
  /home/shane/stitching/AsProjectiveAsPossible/src/SiftROCm.h
  /home/shane/stitching/AsProjectiveAsPossible/src/VLFeatSiftWrapper.h
- /opt/rocm/mivisionx/include/VX/vx.h
- /opt/rocm/mivisionx/include/VX/vx_api.h
- /opt/rocm/mivisionx/include/VX/vx_compatibility.h
- /opt/rocm/mivisionx/include/VX/vx_kernels.h
- /opt/rocm/mivisionx/include/VX/vx_nodes.h
- /opt/rocm/mivisionx/include/VX/vx_types.h
- /opt/rocm/mivisionx/include/VX/vx_vendors.h
- /opt/rocm/mivisionx/include/vx_ext_opencv.h
  /usr/include/eigen3/Eigen/Cholesky
  /usr/include/eigen3/Eigen/Core
  /usr/include/eigen3/Eigen/Dense

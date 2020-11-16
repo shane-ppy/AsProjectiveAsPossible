@@ -180,7 +180,7 @@ int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, 
   detectSiftMatchWithOpenCV(img1, img2, match);
   // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
   // detectSiftMatchWithVLFeat(img1, img2, match);
-  // detectSiftMatchWithROCm(img1, img2, match1);
+  // detectSiftMatchWithROCm(img1, img2, match);
 
   normalizeMatch(match, T1, T2);
 

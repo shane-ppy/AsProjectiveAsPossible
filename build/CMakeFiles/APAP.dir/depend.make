@@ -657,14 +657,6 @@ CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: ../thirdparty/vlfeat/include/sift.h
 CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: ../src/SiftROCm.cpp
 CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: ../src/SiftROCm.h
 CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: ../src/VLFeatSiftWrapper.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/VX/vx.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/VX/vx_api.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/VX/vx_compatibility.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/VX/vx_kernels.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/VX/vx_nodes.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/VX/vx_types.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/VX/vx_vendors.h
-CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /opt/rocm/mivisionx/include/vx_ext_opencv.h
 CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /usr/include/eigen3/Eigen/Cholesky
 CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /usr/include/eigen3/Eigen/Core
 CMakeFiles/APAP.dir/src/SiftROCm.cpp.o: /usr/include/eigen3/Eigen/Dense
