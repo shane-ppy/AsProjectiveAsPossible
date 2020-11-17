@@ -1,7 +1,7 @@
 #pragma once
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/features2d.hpp>
+// #include <opencv2/features2d.hpp>
 #include <Eigen/Dense>
 
 void combineMat(cv::Mat &out, const cv::Mat& left, const cv::Mat& right);

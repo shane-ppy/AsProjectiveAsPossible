@@ -1,5 +1,5 @@
 #include "CVUtility.h"
-#include "opencv2/xfeatures2d.hpp"
+// #include "opencv2/xfeatures2d.hpp"
 #include <vector>
 
 using namespace cv;
@@ -66,54 +66,54 @@ bool filterxy(float xc, float yc)
   return x * x / aa + y_shift * y_shift / bb < 1;
 }
 
-void detectSiftMatchWithOpenCV(Mat &img1, Mat &img2, MatrixXf &match)
-{
+// void detectSiftMatchWithOpenCV(Mat &img1, Mat &img2, MatrixXf &match)
+// {
 
-  cv::Ptr<cv::SIFT> detector = cv::SIFT::create(0, 3, 0.03, 10, 0.5);
-  vector<KeyPoint> key1;
-  vector<KeyPoint> key2;
-  Mat desc1, desc2;
-  Mat output;
+//   cv::Ptr<cv::SIFT> detector = cv::SIFT::create(0, 3, 0.03, 10, 0.5);
+//   vector<KeyPoint> key1;
+//   vector<KeyPoint> key2;
+//   Mat desc1, desc2;
+//   Mat output;
   
-  detector->detectAndCompute(img1, noArray(), key1, desc1);
-  detector->detectAndCompute(img2, noArray(), key2, desc2);
+//   detector->detectAndCompute(img1, noArray(), key1, desc1);
+//   detector->detectAndCompute(img2, noArray(), key2, desc2);
 
-  Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
-  std::vector<std::vector<DMatch>> knn_matches;
-  matcher->knnMatch(desc1, desc2, knn_matches, 2);
-  //-- Filter matches using the Lowe's ratio test
-  const float ratio_thresh = 0.7f;
+//   Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
+//   std::vector<std::vector<DMatch>> knn_matches;
+//   matcher->knnMatch(desc1, desc2, knn_matches, 2);
+//   //-- Filter matches using the Lowe's ratio test
+//   const float ratio_thresh = 0.7f;
 
-  std::vector<DMatch> good_matches;
-  for (size_t i = 0; i < knn_matches.size(); i++)
-  {
-    // good_matches.push_back(knn_matches[i][0]);
-    if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
-    {
-      KeyPoint kp = key1[knn_matches[i][0].queryIdx];
-      if (true || filterkp(kp))
-      {
-        good_matches.push_back(knn_matches[i][0]);
-      }
-    }
-  }
-  // drawMatches(img1, key1, img2, key2, good_matches, output);
-  // imshow("img", output);
-  // waitKey(0);
+//   std::vector<DMatch> good_matches;
+//   for (size_t i = 0; i < knn_matches.size(); i++)
+//   {
+//     // good_matches.push_back(knn_matches[i][0]);
+//     if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
+//     {
+//       KeyPoint kp = key1[knn_matches[i][0].queryIdx];
+//       if (true || filterkp(kp))
+//       {
+//         good_matches.push_back(knn_matches[i][0]);
+//       }
+//     }
+//   }
+//   // drawMatches(img1, key1, img2, key2, good_matches, output);
+//   // imshow("img", output);
+//   // waitKey(0);
 
-  // drawKeypoints(img1, key1, output, Scalar_<double>::all(-1), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-  // imshow("img", output);
-  // waitKey(0);
+//   // drawKeypoints(img1, key1, output, Scalar_<double>::all(-1), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+//   // imshow("img", output);
+//   // waitKey(0);
 
-  match.resize(good_matches.size(), 6);
-  cout << "match count: " << good_matches.size() << endl;
-  for (int i = 0; i < good_matches.size(); i++)
-  {
-    match(i, 0) = key1[good_matches[i].queryIdx].pt.x;
-    match(i, 1) = key1[good_matches[i].queryIdx].pt.y;
-    match(i, 2) = 1;
-    match(i, 3) = key2[good_matches[i].trainIdx].pt.x;
-    match(i, 4) = key2[good_matches[i].trainIdx].pt.y;
-    match(i, 5) = 1;
-  }
-}
+//   match.resize(good_matches.size(), 6);
+//   cout << "match count: " << good_matches.size() << endl;
+//   for (int i = 0; i < good_matches.size(); i++)
+//   {
+//     match(i, 0) = key1[good_matches[i].queryIdx].pt.x;
+//     match(i, 1) = key1[good_matches[i].queryIdx].pt.y;
+//     match(i, 2) = 1;
+//     match(i, 3) = key2[good_matches[i].trainIdx].pt.x;
+//     match(i, 4) = key2[good_matches[i].trainIdx].pt.y;
+//     match(i, 5) = 1;
+//   }
+// }

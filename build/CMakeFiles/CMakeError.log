@@ -1,180 +1,56 @@
-Determining if the CL_VERSION_2_2 exist failed with the following output:
-Change Dir: /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_32523/fast && /usr/bin/make -f CMakeFiles/cmTC_32523.dir/build.make CMakeFiles/cmTC_32523.dir/build
-make[1]: Entering directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_32523.dir/CheckSymbolExists.c.o
-/bin/gcc-9    -o CMakeFiles/cmTC_32523.dir/CheckSymbolExists.c.o   -c /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h: No such file or directory
-    2 | #include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_32523.dir/build.make:66: CMakeFiles/cmTC_32523.dir/CheckSymbolExists.c.o] Error 1
-make[1]: Leaving directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_32523/fast] Error 2
+Run Build Command:"/usr/bin/make" "cmTC_5057f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5057f.dir/build.make CMakeFiles/cmTC_5057f.dir/build
+make[1]: Entering directory '/home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5057f.dir/CheckSymbolExists.c.o
+/usr/bin/gcc-7   -fPIC    -o CMakeFiles/cmTC_5057f.dir/CheckSymbolExists.c.o   -c /home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_5057f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5057f.dir/link.txt --verbose=1
+/usr/bin/gcc-7 -fPIC     -rdynamic CMakeFiles/cmTC_5057f.dir/CheckSymbolExists.c.o  -o cmTC_5057f 
+CMakeFiles/cmTC_5057f.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x14): undefined reference to `pthread_create'
+CheckSymbolExists.c:(.text+0x18): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_5057f.dir/build.make:97: recipe for target 'cmTC_5057f' failed
+make[1]: *** [cmTC_5057f] Error 1
+make[1]: Leaving directory '/home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_5057f/fast' failed
+make: *** [cmTC_5057f/fast] Error 2
 
-
-File /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
-#include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
+#include <pthread.h>
 
 int main(int argc, char** argv)
 {
   (void)argv;
-#ifndef CL_VERSION_2_2
-  return ((int*)(&CL_VERSION_2_2))[argc];
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
 #else
   (void)argc;
   return 0;
 #endif
 }
-Determining if the CL_VERSION_2_1 exist failed with the following output:
-Change Dir: /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_05279/fast && /usr/bin/make -f CMakeFiles/cmTC_05279.dir/build.make CMakeFiles/cmTC_05279.dir/build
-make[1]: Entering directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_05279.dir/CheckSymbolExists.c.o
-/bin/gcc-9    -o CMakeFiles/cmTC_05279.dir/CheckSymbolExists.c.o   -c /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h: No such file or directory
-    2 | #include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_05279.dir/build.make:66: CMakeFiles/cmTC_05279.dir/CheckSymbolExists.c.o] Error 1
-make[1]: Leaving directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_05279/fast] Error 2
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
 
-
-File /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
-/* */
-#include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-
-int main(int argc, char** argv)
-{
-  (void)argv;
-#ifndef CL_VERSION_2_1
-  return ((int*)(&CL_VERSION_2_1))[argc];
-#else
-  (void)argc;
-  return 0;
-#endif
-}
-Determining if the CL_VERSION_2_0 exist failed with the following output:
-Change Dir: /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
-
-Run Build Command(s):/usr/bin/make cmTC_9e3b5/fast && /usr/bin/make -f CMakeFiles/cmTC_9e3b5.dir/build.make CMakeFiles/cmTC_9e3b5.dir/build
-make[1]: Entering directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9e3b5.dir/CheckSymbolExists.c.o
-/bin/gcc-9    -o CMakeFiles/cmTC_9e3b5.dir/CheckSymbolExists.c.o   -c /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h: No such file or directory
-    2 | #include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_9e3b5.dir/build.make:66: CMakeFiles/cmTC_9e3b5.dir/CheckSymbolExists.c.o] Error 1
-make[1]: Leaving directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_9e3b5/fast] Error 2
+Run Build Command:"/usr/bin/make" "cmTC_f91f1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f91f1.dir/build.make CMakeFiles/cmTC_f91f1.dir/build
+make[1]: Entering directory '/home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f91f1.dir/CheckFunctionExists.c.o
+/usr/bin/gcc-7   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_f91f1.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f91f1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f91f1.dir/link.txt --verbose=1
+/usr/bin/gcc-7 -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_f91f1.dir/CheckFunctionExists.c.o  -o cmTC_f91f1 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_f91f1.dir/build.make:97: recipe for target 'cmTC_f91f1' failed
+make[1]: *** [cmTC_f91f1] Error 1
+make[1]: Leaving directory '/home/pi/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_f91f1/fast' failed
+make: *** [cmTC_f91f1/fast] Error 2
 
 
-File /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
-/* */
-#include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-
-int main(int argc, char** argv)
-{
-  (void)argv;
-#ifndef CL_VERSION_2_0
-  return ((int*)(&CL_VERSION_2_0))[argc];
-#else
-  (void)argc;
-  return 0;
-#endif
-}
-Determining if the CL_VERSION_1_2 exist failed with the following output:
-Change Dir: /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
-
-Run Build Command(s):/usr/bin/make cmTC_f76e4/fast && /usr/bin/make -f CMakeFiles/cmTC_f76e4.dir/build.make CMakeFiles/cmTC_f76e4.dir/build
-make[1]: Entering directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f76e4.dir/CheckSymbolExists.c.o
-/bin/gcc-9    -o CMakeFiles/cmTC_f76e4.dir/CheckSymbolExists.c.o   -c /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h: No such file or directory
-    2 | #include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_f76e4.dir/build.make:66: CMakeFiles/cmTC_f76e4.dir/CheckSymbolExists.c.o] Error 1
-make[1]: Leaving directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_f76e4/fast] Error 2
-
-
-File /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
-/* */
-#include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-
-int main(int argc, char** argv)
-{
-  (void)argv;
-#ifndef CL_VERSION_1_2
-  return ((int*)(&CL_VERSION_1_2))[argc];
-#else
-  (void)argc;
-  return 0;
-#endif
-}
-Determining if the CL_VERSION_1_1 exist failed with the following output:
-Change Dir: /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
-
-Run Build Command(s):/usr/bin/make cmTC_21f0e/fast && /usr/bin/make -f CMakeFiles/cmTC_21f0e.dir/build.make CMakeFiles/cmTC_21f0e.dir/build
-make[1]: Entering directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_21f0e.dir/CheckSymbolExists.c.o
-/bin/gcc-9    -o CMakeFiles/cmTC_21f0e.dir/CheckSymbolExists.c.o   -c /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h: No such file or directory
-    2 | #include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_21f0e.dir/build.make:66: CMakeFiles/cmTC_21f0e.dir/CheckSymbolExists.c.o] Error 1
-make[1]: Leaving directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_21f0e/fast] Error 2
-
-
-File /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
-/* */
-#include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-
-int main(int argc, char** argv)
-{
-  (void)argv;
-#ifndef CL_VERSION_1_1
-  return ((int*)(&CL_VERSION_1_1))[argc];
-#else
-  (void)argc;
-  return 0;
-#endif
-}
-Determining if the CL_VERSION_1_0 exist failed with the following output:
-Change Dir: /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp
-
-Run Build Command(s):/usr/bin/make cmTC_7d75e/fast && /usr/bin/make -f CMakeFiles/cmTC_7d75e.dir/build.make CMakeFiles/cmTC_7d75e.dir/build
-make[1]: Entering directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_7d75e.dir/CheckSymbolExists.c.o
-/bin/gcc-9    -o CMakeFiles/cmTC_7d75e.dir/CheckSymbolExists.c.o   -c /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h: No such file or directory
-    2 | #include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_7d75e.dir/build.make:66: CMakeFiles/cmTC_7d75e.dir/CheckSymbolExists.c.o] Error 1
-make[1]: Leaving directory '/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_7d75e/fast] Error 2
-
-
-File /home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
-/* */
-#include <OpenCL_INCLUDE_DIR-NOTFOUND/CL/cl.h>
-
-int main(int argc, char** argv)
-{
-  (void)argv;
-#ifndef CL_VERSION_1_0
-  return ((int*)(&CL_VERSION_1_0))[argc];
-#else
-  (void)argc;
-  return 0;
-#endif
-}

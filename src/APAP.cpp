@@ -177,7 +177,7 @@ int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, 
   int height = img1.size[0];
   int width = img1.size[1]; 
   MatrixXf match;
-  detectSiftMatchWithOpenCV(img1, img2, match);
+  // detectSiftMatchWithOpenCV(img1, img2, match);
   // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
   // detectSiftMatchWithVLFeat(img1, img2, match);
   // detectSiftMatchWithROCm(img1, img2, match);
@@ -224,11 +224,12 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
   MatrixXf pts1 = (T1.inverse()*inlier.block(0, 0, inlier.rows(), 3).transpose()).transpose();
   // MatrixXf pts2 = (T2.inverse()*inlier.block(0, 3, inlier.rows(), 3).transpose()).transpose();
   Matrix3f inv_T2 = T2.inverse();
+  MatrixXf Wi(pts1.rows()*2, pts1.rows()*2);
+  Wi.setZero();
 
-  #pragma omp parallel for shared(Hmdlt) num_threads(6)
+  // #pragma omp parallel for shared(Hmdlt) num_threads(6)
   for (int i = 0; i < GW*GH - 1; i++) {
-    MatrixXf Wi(pts1.rows()*2, pts1.rows()*2);
-    Wi.setZero();
+    
     float localX = MvX(i%GW);
     float localY = MvY(i/GW);
     

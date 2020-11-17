@@ -66,5 +66,8 @@
     },
     "intelOneAPI.analysis.binary-path": "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg",
     "intelOneAPI.analysis.vtune.install-root": "/opt/intel/oneapi/vtune/latest",
-    "intelOneAPI.analysis.vtune.project-folder": "/home/shane/feature/AsProjectiveAsPossible/vtune"
+    "intelOneAPI.analysis.vtune.project-folder": "/home/shane/feature/AsProjectiveAsPossible/vtune",
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/eloquent/lib/python3.6/site-packages"
+    ]
 }
