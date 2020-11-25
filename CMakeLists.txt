@@ -6,22 +6,23 @@ SET(GCC_COVERAGE_LINK_FLAGS    "-pg")
 
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-lvisionworks -lovx -lnvx -lpthread")
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGE} "-lgstpbutils-1.0 -lgstapp-1.0 -lgstbase-1.0 -lgstreamer-1.o -lgobject-2.0 -lglib-2.0")
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGE} "/usr/share/visionworks/sorces/3rdparty/glfw3/libs/libglfw3.a")
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGE} "-lXrandr -lXi -lXxf86vm -lX11 -lGL")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread -D WITH_LIBV4L=ON ")
+# SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-lpthread -lvisionworks -lovx -lnvx ")
+# SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGE} "-lgstpbutils-1.0 -lgstapp-1.0 -lgstbase-1.0 -lgstreamer-1.o -lgobject-2.0 -lglib-2.0")
+# SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGE} "/usr/share/visionworks/sorces/3rdparty/glfw3/libs/libglfw3.a")
+# SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGE} "-lXrandr -lXi -lXxf86vm -lX11 -lGL")
 
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 3.4 REQUIRED)
 find_package(OpenCL REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLUT REQUIRED)
+# find_package(GLEW REQUIRED)
+# find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(DevIL REQUIRED)
+# find_package(DevIL REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(VisionWorks REQUIRED)
+# find_package(VisionWorks REQUIRED)
 
 # find_package(jetson-utils)
 # find_package(jetson-inference)
@@ -37,10 +38,10 @@ set(VW_INCLUDE /usr/share/visionworks/sources/nvxio/include)
 add_definitions(-std=c++11)
 
 include_directories(
-  ${GLEW_INCLUDE_DIRS}
+  # ${GLEW_INCLUDE_DIRS}
   ${OPENGL_INCLUDE_DIRS}
-  ${GLUT_INCLUDE_DIRS}
-  ${IL_INCLUDE_DIR}
+  # ${GLUT_INCLUDE_DIRS}
+  # ${IL_INCLUDE_DIR}
   ${EIGEN3_INCLUDE_DIR}
   ${VW_INCLUDE}
   # ${VLFEAT_INCLUDE}
@@ -64,13 +65,15 @@ add_executable(APAP ${PROJECT_SOURCE_DIR}/src/APAP.cpp
 )
 
 target_link_libraries(APAP 
-  ${GLEW_LIBRARIES}
-  ${GLUT_LIBRARY}
+  # ${GLEW_LIBRARIES}
+  # ${GLUT_LIBRARY}
   ${OPENGL_LIBRARIES}
-  ${IL_LIBRARIES}
+  # ${IL_LIBRARIES}
   ${OpenCV_LIBRARIES}
   ${EIGEN3_LIBS}
-  ${VisionWorks_LIBRARIES}
+  # ${VisionWorks_LIBRARIES}
+  ${CUDA_LIBRARIES}
+  ${CUDA_CUSOLVER_LIBRARIES}
   # ${VLFEAT_LIB}
   # ${SIFTGPU_LIB}
   # openvx 

@@ -1,17 +1,17 @@
 [
 {
   "directory": "/home/pi/stitching/AsProjectiveAsPossible/build",
-  "command": "/usr/bin/g++-7   -I/usr/include/IL -I/usr/include/eigen3 -I/usr/share/visionworks/sources/nvxio/include -isystem /usr/include/opencv4  -lXrandr -lXi -lXxf86vm -lX11 -lGL -O3 -DNDEBUG   -std=c++11 -o CMakeFiles/APAP.dir/src/APAP.cpp.o -c /home/pi/stitching/AsProjectiveAsPossible/src/APAP.cpp",
+  "command": "/usr/bin/aarch64-linux-gnu-g++-7  -DOPENCV_TRAITS_ENABLE_DEPRECATED -I/usr/include/eigen3 -I/usr/share/visionworks/sources/nvxio/include -isystem /usr/local/include -isystem /usr/local/include/opencv   -pg -lpthread -D WITH_LIBV4L=ON  -O3 -DNDEBUG   -std=c++11 -o CMakeFiles/APAP.dir/src/APAP.cpp.o -c /home/pi/stitching/AsProjectiveAsPossible/src/APAP.cpp",
   "file": "/home/pi/stitching/AsProjectiveAsPossible/src/APAP.cpp"
 },
 {
   "directory": "/home/pi/stitching/AsProjectiveAsPossible/build",
-  "command": "/usr/bin/g++-7   -I/usr/include/IL -I/usr/include/eigen3 -I/usr/share/visionworks/sources/nvxio/include -isystem /usr/include/opencv4  -lXrandr -lXi -lXxf86vm -lX11 -lGL -O3 -DNDEBUG   -std=c++11 -o CMakeFiles/APAP.dir/src/Math.cpp.o -c /home/pi/stitching/AsProjectiveAsPossible/src/Math.cpp",
+  "command": "/usr/bin/aarch64-linux-gnu-g++-7  -DOPENCV_TRAITS_ENABLE_DEPRECATED -I/usr/include/eigen3 -I/usr/share/visionworks/sources/nvxio/include -isystem /usr/local/include -isystem /usr/local/include/opencv   -pg -lpthread -D WITH_LIBV4L=ON  -O3 -DNDEBUG   -std=c++11 -o CMakeFiles/APAP.dir/src/Math.cpp.o -c /home/pi/stitching/AsProjectiveAsPossible/src/Math.cpp",
   "file": "/home/pi/stitching/AsProjectiveAsPossible/src/Math.cpp"
 },
 {
   "directory": "/home/pi/stitching/AsProjectiveAsPossible/build",
-  "command": "/usr/bin/g++-7   -I/usr/include/IL -I/usr/include/eigen3 -I/usr/share/visionworks/sources/nvxio/include -isystem /usr/include/opencv4  -lXrandr -lXi -lXxf86vm -lX11 -lGL -O3 -DNDEBUG   -std=c++11 -o CMakeFiles/APAP.dir/src/CVUtility.cpp.o -c /home/pi/stitching/AsProjectiveAsPossible/src/CVUtility.cpp",
+  "command": "/usr/bin/aarch64-linux-gnu-g++-7  -DOPENCV_TRAITS_ENABLE_DEPRECATED -I/usr/include/eigen3 -I/usr/share/visionworks/sources/nvxio/include -isystem /usr/local/include -isystem /usr/local/include/opencv   -pg -lpthread -D WITH_LIBV4L=ON  -O3 -DNDEBUG   -std=c++11 -o CMakeFiles/APAP.dir/src/CVUtility.cpp.o -c /home/pi/stitching/AsProjectiveAsPossible/src/CVUtility.cpp",
   "file": "/home/pi/stitching/AsProjectiveAsPossible/src/CVUtility.cpp"
 }
 ]

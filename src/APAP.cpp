@@ -169,7 +169,7 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
   if (displayResult)
     displayMat(linearFusion);
   if (saveData)
-    imwrite("/home/shane/stitching/AsProjectiveAsPossible/build/APAP.jpg", linearFusion);
+    imwrite("/home/pi/stitching/AsProjectiveAsPossible/build/APAP.jpg", linearFusion);
 }
 
 int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, int &offX, int &offY, int &cw, int &ch, Mat &img1, Mat &img2) {
@@ -181,7 +181,7 @@ int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, 
   // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
   // detectSiftMatchWithVLFeat(img1, img2, match);
   // detectSiftMatchWithROCm(img1, img2, match);
-
+  detectFastMatchWithOpenCV(img1, img2, match);
   normalizeMatch(match, T1, T2);
 
   singleModelRANSAC(match, 500, inlier);
@@ -258,7 +258,7 @@ struct Data {
 };
 
 int main() {
-  auto t1 = chrono::high_resolution_clock::now();
+  // auto t1 = std::chrono::high_resolution_clock::now();
   MatrixXf inlier, A;
   Matrix3f T1, T2;
   Mat img1, img2, img3, img23, img123;
@@ -266,29 +266,28 @@ int main() {
   int offY = 0; 
   int cw = 860;
   int ch = 860;
+
+  video_feature();
   // int offX, offY, cw, ch;
 
-  // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_7_25.jpg";
-  // const char* img2_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_8_25.jpg";
-  // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg";
-  const char* img1_path = "/home/shane/camera0_cir.jpg";
-  const char* img2_path = "/home/shane/camera2_cir.jpg";
-  const char* img3_path = "/home/shane/camera4_cir.jpg";
-  displayResult = false;
-  saveData = true;
+  // const char* img1_path = "/home/pi/camera0_cir.jpg";
+  // const char* img2_path = "/home/pi/camera2_cir.jpg";
+  // const char* img3_path = "/home/pi/camera4_cir.jpg";
+  // displayResult = false;
+  // saveData = true;
 
-  img1 = imread(img1_path);
-  img2 = imread(img2_path);
-  img3 = imread(img3_path);
+  // img1 = imread(img1_path);
+  // img2 = imread(img2_path);
+  // img3 = imread(img3_path);
 
   
-  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3);
-  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23);
-  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23);
-  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23, img123);
-  auto t2 = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
-  cout << duration << endl;
+  // GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3);
+  // APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23);
+  // GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23);
+  // APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23, img123);
+  // auto t2 = std::chrono::high_resolution_clock::now();
+  // auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+  // cout << duration << endl;
 
   return 0;
 }
