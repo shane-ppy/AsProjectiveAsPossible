@@ -27,7 +27,7 @@ CMAKE_ADDR2LINE:FILEPATH=/bin/addr2line
 CMAKE_AR:FILEPATH=/bin/ar
 
 //No help, variable specified on the command line.
-CMAKE_BUILD_TYPE:STRING=Release
+CMAKE_BUILD_TYPE:STRING=Debug
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -286,12 +286,6 @@ OPENGL_opengl_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libOpenGL.so
 //Path to a file.
 OPENGL_xmesa_INCLUDE_DIR:PATH=OPENGL_xmesa_INCLUDE_DIR-NOTFOUND
 
-//Path to a file.
-OpenCL_INCLUDE_DIR:PATH=OpenCL_INCLUDE_DIR-NOTFOUND
-
-//Path to a library.
-OpenCL_LIBRARY:FILEPATH=OpenCL_LIBRARY-NOTFOUND
-
 //The directory containing a CMake configuration file for OpenCV.
 OpenCV_DIR:PATH=/usr/local/share/OpenCV
 
@@ -299,7 +293,7 @@ OpenCV_DIR:PATH=/usr/local/share/OpenCV
 OpenMP_CXX_FLAGS:STRING=-fopenmp
 
 //CXX compiler libraries for OpenMP parallelization
-OpenMP_CXX_LIB_NAMES:STRING=gomp;pthread
+OpenMP_CXX_LIB_NAMES:STRING=cnpy;z;pthread;gomp;pthread
 
 //C compiler flags for OpenMP parallelization
 OpenMP_C_FLAGS:STRING=-fopenmp
@@ -307,11 +301,17 @@ OpenMP_C_FLAGS:STRING=-fopenmp
 //C compiler libraries for OpenMP parallelization
 OpenMP_C_LIB_NAMES:STRING=gomp;pthread
 
+//Path to the cnpy library for OpenMP
+OpenMP_cnpy_LIBRARY:FILEPATH=OpenMP_cnpy_LIBRARY-NOTFOUND
+
 //Path to the gomp library for OpenMP
 OpenMP_gomp_LIBRARY:FILEPATH=/usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so
 
 //Path to the pthread library for OpenMP
 OpenMP_pthread_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libpthread.so
+
+//Path to the z library for OpenMP
+OpenMP_z_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libz.so
 
 
 ########################
@@ -473,12 +473,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_GLUT:INTERNAL=[/usr/lib/x86_64-linux-gnu/libglut.so
 FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/usr/local][v3.4.12(3.4)]
 //Details about finding OpenGL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libOpenGL.so][/usr/lib/x86_64-linux-gnu/libGLX.so][/usr/include][c ][v()]
-//Details about finding OpenMP
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[TRUE][TRUE][c ][v()]
 //Details about finding OpenMP_C
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C:INTERNAL=[-fopenmp][/usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so][/usr/lib/x86_64-linux-gnu/libpthread.so][v()]
-//Details about finding OpenMP_CXX
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-fopenmp][/usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so][/usr/lib/x86_64-linux-gnu/libpthread.so][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C:INTERNAL=[-fopenmp][/usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so][/usr/lib/x86_64-linux-gnu/libpthread.so][v4.5()]
 //ADVANCED property for variable: GLEW_INCLUDE_DIR
 GLEW_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GLEW_SHARED_LIBRARY_DEBUG
@@ -497,18 +493,6 @@ GLUT_Xi_LIBRARY-ADVANCED:INTERNAL=1
 GLUT_Xmu_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GLUT_glut_LIBRARY
 GLUT_glut_LIBRARY-ADVANCED:INTERNAL=1
-//Have symbol CL_VERSION_1_0
-OPENCL_VERSION_1_0:INTERNAL=
-//Have symbol CL_VERSION_1_1
-OPENCL_VERSION_1_1:INTERNAL=
-//Have symbol CL_VERSION_1_2
-OPENCL_VERSION_1_2:INTERNAL=
-//Have symbol CL_VERSION_2_0
-OPENCL_VERSION_2_0:INTERNAL=
-//Have symbol CL_VERSION_2_1
-OPENCL_VERSION_2_1:INTERNAL=
-//Have symbol CL_VERSION_2_2
-OPENCL_VERSION_2_2:INTERNAL=
 //ADVANCED property for variable: OPENGL_EGL_INCLUDE_DIR
 OPENGL_EGL_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_GLX_INCLUDE_DIR
@@ -547,8 +531,12 @@ OpenMP_C_SPEC_DATE:INTERNAL=201511
 OpenMP_SPECTEST_CXX_:INTERNAL=TRUE
 //Result of TRY_COMPILE
 OpenMP_SPECTEST_C_:INTERNAL=TRUE
+//ADVANCED property for variable: OpenMP_cnpy_LIBRARY
+OpenMP_cnpy_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OpenMP_gomp_LIBRARY
 OpenMP_gomp_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OpenMP_pthread_LIBRARY
 OpenMP_pthread_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_z_LIBRARY
+OpenMP_z_LIBRARY-ADVANCED:INTERNAL=1
 

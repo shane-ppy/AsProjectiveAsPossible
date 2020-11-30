@@ -4,7 +4,8 @@
 #include "CVUtility.h"
 #include "SiftGPUWrapper.h"
 #include "VLFeatSiftWrapper.h"
-#include "SiftROCm.h"
+#include "cnpy.h"
+// #include "SiftROCm.h"
 
 void drawMatch(cv::Mat &img, const Eigen::MatrixXf &match, const Eigen::Matrix3f &inv_T1, const Eigen::Matrix3f &inv_T2);
 void warpAndFuseImage(const cv::Mat &img1, const cv::Mat &img2, const Eigen::Matrix3f &H);

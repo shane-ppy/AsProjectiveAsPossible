@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(APAP)
 
-SET(GCC_COVERAGE_COMPILE_FLAGS "-pg")
-SET(GCC_COVERAGE_LINK_FLAGS    "-pg")
+SET(GCC_COVERAGE_COMPILE_FLAGS "-pg -lcnpy -lz -lpthread -D WITH_LIBV4L=ON")
+SET(GCC_COVERAGE_LINK_FLAGS    "-pg -lcnpy -lz ")
 
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
@@ -22,7 +22,7 @@ set(VLFEAT_INCLUDE ${PROJECT_SOURCE_DIR}/thirdparty/vlfeat/include)
 set(VLFEAT_LIB ${PROJECT_SOURCE_DIR}/thirdparty/vlfeat/lib/libvl.so)
 set(SIFTGPU_INCLUDE ${PROJECT_SOURCE_DIR}/thirdparty/SiftGPU/include)
 set(SIFTGPU_LIB ${PROJECT_SOURCE_DIR}/thirdparty/SiftGPU/lib/libsiftgpu.so)
-set(MIVISIONX_INCLUDE /opt/rocm/mivisionx/include)
+# set(MIVISIONX_INCLUDE /opt/rocm/mivisionx/include)
 
 add_definitions(-std=c++11)
 
@@ -34,7 +34,7 @@ include_directories(
   ${EIGEN3_INCLUDE_DIR}
   ${VLFEAT_INCLUDE}
   ${SIFTGPU_INCLUDE}
-  ${MIVISIONX_INCLUDE}
+  # ${MIVISIONX_INCLUDE}
   )
 
 link_directories(/opt/rocm/mivisionx/lib)
@@ -44,9 +44,11 @@ add_executable(APAP ${PROJECT_SOURCE_DIR}/src/APAP.cpp
                     ${PROJECT_SOURCE_DIR}/src/CVUtility.cpp
                     ${PROJECT_SOURCE_DIR}/src/SiftGPUWrapper.cpp
                     ${PROJECT_SOURCE_DIR}/src/VLFeatSiftWrapper.cpp
-                    ${PROJECT_SOURCE_DIR}/src/SiftROCm.cpp)
+                    # ${PROJECT_SOURCE_DIR}/src/SiftROCm.cpp
+)
 
 target_link_libraries(APAP 
+  cnpy
   ${GLEW_LIBRARIES}
   ${GLUT_LIBRARY}
   ${OPENGL_LIBRARIES}
@@ -55,6 +57,7 @@ target_link_libraries(APAP
   ${EIGEN3_LIBS}
   ${SIFTGPU_LIB}
   ${VLFEAT_LIB}
-  openvx 
-  vx_opencv
-  OpenMP::OpenMP_CXX)
+  OpenMP::OpenMP_CXX
+  # openvx 
+  # vx_opencv
+  )

@@ -1,3 +1,0 @@
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/rebuild_cache.dir
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/edit_cache.dir
-/home/shane/stitching/AsProjectiveAsPossible/build/CMakeFiles/APAP.dir

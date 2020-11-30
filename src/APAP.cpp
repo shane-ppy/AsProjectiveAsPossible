@@ -177,14 +177,16 @@ int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, 
   int height = img1.size[0];
   int width = img1.size[1]; 
   MatrixXf match;
-  detectSiftMatchWithOpenCV(img1, img2, match);
+  
+  // detectSiftMatchWithOpenCV(img1, img2, match);
   // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
   // detectSiftMatchWithVLFeat(img1, img2, match);
   // detectSiftMatchWithROCm(img1, img2, match);
-
+  detectORBMatchWithOpenCV(img1, img2, match);
+  
   normalizeMatch(match, T1, T2);
 
-  singleModelRANSAC(match, 500, inlier);
+  singleModelRANSAC(match, 2000, inlier);
   // multiModelRANSAC(match, 500, inlier);
   Matrix3f H;
   fitHomography(inlier.block(0, 0, inlier.rows(), 3), inlier.block(0, 3, inlier.rows(), 3), H, A);
@@ -225,7 +227,7 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
   // MatrixXf pts2 = (T2.inverse()*inlier.block(0, 3, inlier.rows(), 3).transpose()).transpose();
   Matrix3f inv_T2 = T2.inverse();
 
-  #pragma omp parallel for shared(Hmdlt) num_threads(6)
+  // #pragma omp parallel for shared(Hmdlt) num_threads(6)
   for (int i = 0; i < GW*GH - 1; i++) {
     MatrixXf Wi(pts1.rows()*2, pts1.rows()*2);
     Wi.setZero();
@@ -256,11 +258,38 @@ struct Data {
   Data(float _residue, size_t _index):residue(_residue), index(_index){}
 };
 
+long* cnpy2ptr(std::string data_fname)
+{
+  cnpy::NpyArray npy_data = cnpy::npy_load(data_fname);
+  // double* ptr = npy_data.data<double>();
+  int data_row = npy_data.shape[0];
+  int data_col = npy_data.shape[1];
+  long* ptr = static_cast<long *>(malloc(data_row * data_col * sizeof(long)));
+  memcpy(ptr, npy_data.data<long>(), data_row * data_col * sizeof(long));
+  return ptr;
+}
+
+long *transform_i = cnpy2ptr("/home/shane/stitching/image_processing/transform_i_0.npy");
+long *transform_j = cnpy2ptr("/home/shane/stitching/image_processing/transform_j_0.npy");
+
+void transform(Mat &raw, Mat &img) {
+  img = Mat(Size(860,860),CV_8UC3, Scalar(0, 0, 0));
+  // #pragma omp parallel for num_threads(6)
+  for (int i = 0; i < 860; i++) {
+    for (int j = 0; j < 860; j++) {
+      int ind_i = (int) transform_i[i * 860 + j];
+      int ind_j = (int) transform_j[i * 860 + j];
+      Vec3b bgrPixel = raw.at<Vec3b>(ind_i, ind_j);
+      img.at<Vec3b>(i, j) = bgrPixel;
+    }
+  }
+}
+
 int main() {
-  auto t1 = chrono::high_resolution_clock::now();
   MatrixXf inlier, A;
   Matrix3f T1, T2;
   Mat img1, img2, img3, img23, img123;
+  Mat raw1, raw2, raw3;
   int offX = 0; 
   int offY = 0; 
   int cw = 860;
@@ -270,24 +299,46 @@ int main() {
   // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_7_25.jpg";
   // const char* img2_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_8_25.jpg";
   // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg";
-  const char* img1_path = "/home/shane/camera0_cir.jpg";
-  const char* img2_path = "/home/shane/camera2_cir.jpg";
-  const char* img3_path = "/home/shane/camera4_cir.jpg";
+  // const char* img1_path = "/home/shane/0.jpg";
+  // const char* img2_path = "/home/shane/2.jpg";
+  // const char* img3_path = "/home/shane/4.jpg";
   displayResult = false;
   saveData = true;
 
-  img1 = imread(img1_path);
-  img2 = imread(img2_path);
-  img3 = imread(img3_path);
+  // raw1 = imread(img1_path);
+  // raw2 = imread(img2_path);
+  // raw3 = imread(img3_path);
+
+  VideoCapture camera0("/home/shane/camera0.mp4"); 
+  VideoCapture camera2("/home/shane/camera2.mp4"); 
+  VideoCapture camera4("/home/shane/camera4.mp4"); 
+
+  while (camera0.isOpened() && camera2.isOpened() && camera4.isOpened()) {
+    if (!camera0.read(raw1)) break;
+    if (!camera2.read(raw2)) break;
+    if (!camera4.read(raw3)) break;
+
+    transform(raw1, img1);
+    transform(raw2, img2);
+    transform(raw3, img3);
+
+    GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3);
+    APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23);
+    GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23);
+    APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23, img123);
+    imshow("bev", img123);
+    char c = waitKey(1);
+    if (c == 27) break;
+  }
+
+  // auto t1 = chrono::high_resolution_clock::now();
+  
+  // auto t2 = std::chrono::high_resolution_clock::now();
+  // auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+  // cout << duration << endl;
 
   
-  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3);
-  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23);
-  GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23);
-  APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23, img123);
-  auto t2 = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
-  cout << duration << endl;
+
 
   return 0;
 }
