@@ -104,7 +104,7 @@ void detectORBMatchWithOpenCV(cv::Mat &img1, cv::Mat &img2, Eigen::MatrixXf &mat
   Mat desc1, desc2;
   Mat output;
 
-  Ptr<ORB> orb = ORB::create(2000, (1.200000048F), 8, 31, 0, 2);
+  Ptr<ORB> orb = ORB::create(5000, (1.200000048F), 8, 31, 0, 2);
   orb->detectAndCompute(img1, noArray(), key1, desc1);
   orb->detectAndCompute(img2, noArray(), key2, desc2);
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(APAP)
 
-SET(GCC_COVERAGE_COMPILE_FLAGS "-pg -lcnpy -lz -lpthread -D WITH_LIBV4L=ON")
+SET(GCC_COVERAGE_COMPILE_FLAGS "-pg -lcnpy -lz")
 SET(GCC_COVERAGE_LINK_FLAGS    "-pg -lcnpy -lz ")
 
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
@@ -16,12 +16,12 @@ find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(DevIL REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(OpenMP REQUIRED)
+# find_package(OpenMP REQUIRED)
 
 set(VLFEAT_INCLUDE ${PROJECT_SOURCE_DIR}/thirdparty/vlfeat/include)
 set(VLFEAT_LIB ${PROJECT_SOURCE_DIR}/thirdparty/vlfeat/lib/libvl.so)
-set(SIFTGPU_INCLUDE ${PROJECT_SOURCE_DIR}/thirdparty/SiftGPU/include)
-set(SIFTGPU_LIB ${PROJECT_SOURCE_DIR}/thirdparty/SiftGPU/lib/libsiftgpu.so)
+# set(SIFTGPU_INCLUDE ${PROJECT_SOURCE_DIR}/thirdparty/SiftGPU/include)
+# set(SIFTGPU_LIB ${PROJECT_SOURCE_DIR}/thirdparty/SiftGPU/lib/libsiftgpu.so)
 # set(MIVISIONX_INCLUDE /opt/rocm/mivisionx/include)
 
 add_definitions(-std=c++11)
@@ -33,7 +33,7 @@ include_directories(
   ${IL_INCLUDE_DIR}
   ${EIGEN3_INCLUDE_DIR}
   ${VLFEAT_INCLUDE}
-  ${SIFTGPU_INCLUDE}
+  # ${SIFTGPU_INCLUDE}
   # ${MIVISIONX_INCLUDE}
   )
 
@@ -55,9 +55,9 @@ target_link_libraries(APAP
   ${IL_LIBRARIES}
   ${OpenCV_LIBRARIES}
   ${EIGEN3_LIBS}
-  ${SIFTGPU_LIB}
+  # ${SIFTGPU_LIB}
   ${VLFEAT_LIB}
-  OpenMP::OpenMP_CXX
+  # OpenMP::OpenMP_CXX
   # openvx 
   # vx_opencv
   )

@@ -62,7 +62,8 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "*.ipp": "cpp"
     },
     "intelOneAPI.analysis.binary-path": "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg",
     "intelOneAPI.analysis.vtune.install-root": "/opt/intel/oneapi/vtune/latest",

@@ -32,7 +32,7 @@ void drawMatch(Mat &img, const MatrixXf &match, const Matrix3f &inv_T1, const Ma
   }
 }
 
-void warpAndFuseImage(const Mat &img1, const Mat &img2, const Matrix3f &H, int &offX, int &offY, int &cw, int &ch) {
+void warpAndFuseImage(const Mat &img1, const Mat &img2, const Matrix3f &H, int &offX, int &offY, int &cw, int &ch, Mat &linearFusion) {
 
   int height = img1.size[0];
   int width = img1.size[1];
@@ -77,7 +77,7 @@ void warpAndFuseImage(const Mat &img1, const Mat &img2, const Matrix3f &H, int &
   // ch = height;
   Mat warp_img1 = Mat::zeros(ch, cw, CV_8UC3);
   Mat warp_img2 = Mat::zeros(ch, cw, CV_8UC3);
-  Mat linearFusion = Mat::zeros(ch, cw, CV_8UC3); img1.copyTo(warp_img1(Rect_<int>(-minX, -minY, width, height))); uint8_t r, g, b;
+  linearFusion = Mat::zeros(ch, cw, CV_8UC3); img1.copyTo(warp_img1(Rect_<int>(-minX, -minY, width, height))); uint8_t r, g, b;
   float h00 = H(0, 0);
   float h01 = H(0, 1);
   float h02 = H(0, 2);
@@ -172,39 +172,42 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
     imwrite("/home/shane/stitching/AsProjectiveAsPossible/build/APAP.jpg", linearFusion);
 }
 
-int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, int &offX, int &offY, int &cw, int &ch, Mat &img1, Mat &img2) {
+int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, int &offX, int &offY, int &cw, int &ch, Mat &img1, Mat &img2, Mat &img12H) {
 
-  int height = img1.size[0];
-  int width = img1.size[1]; 
-  MatrixXf match;
+  // int height = img1.size[0];
+  // int width = img1.size[1]; 
+  // MatrixXf match;
   
-  // detectSiftMatchWithOpenCV(img1, img2, match);
-  // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
-  // detectSiftMatchWithVLFeat(img1, img2, match);
-  // detectSiftMatchWithROCm(img1, img2, match);
-  detectORBMatchWithOpenCV(img1, img2, match);
+  // // detectSiftMatchWithOpenCV(img1, img2, match);
+  // // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
+  // // detectSiftMatchWithVLFeat(img1, img2, match);
+  // // detectSiftMatchWithROCm(img1, img2, match);
+  // detectORBMatchWithOpenCV(img1, img2, match);
   
-  normalizeMatch(match, T1, T2);
+  // normalizeMatch(match, T1, T2);
 
-  singleModelRANSAC(match, 2000, inlier);
-  // multiModelRANSAC(match, 500, inlier);
-  Matrix3f H;
-  fitHomography(inlier.block(0, 0, inlier.rows(), 3), inlier.block(0, 3, inlier.rows(), 3), H, A);
+  // // cout << T1;
 
-  if (displayResult) {
-    Mat display;
-    combineMat(display, img1, img2);
-    drawMatch(display, match, T1.inverse(), T2.inverse());
-    displayMat(display);
+  // singleModelRANSAC(match, 2000, inlier);
+  // // multiModelRANSAC(match, 500, inlier);
+  // Matrix3f H;
+  // fitHomography(inlier.block(0, 0, inlier.rows(), 3), inlier.block(0, 3, inlier.rows(), 3), H, A);
 
-    combineMat(display, img1, img2);
-    drawMatch(display, inlier, T1.inverse(), T2.inverse());
-    displayMat(display);
-  }
+  // if (displayResult) {
+  //   Mat display;
+  //   combineMat(display, img1, img2);
+  //   drawMatch(display, match, T1.inverse(), T2.inverse());
+  //   displayMat(display);
 
-  Matrix3f Hg = T2.inverse()*H*T1;
-  
-  warpAndFuseImage(img1, img2, Hg, offX, offY, cw, ch);
+  //   combineMat(display, img1, img2);
+  //   drawMatch(display, inlier, T1.inverse(), T2.inverse());
+  //   displayMat(display);
+  // }
+
+  // Matrix3f Hg = T2.inverse()*H*T1;
+  Matrix3f Hg;
+  Hg << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+  warpAndFuseImage(img1, img2, Hg, offX, offY, cw, ch, img12H);
   return 0;
 }
 
@@ -227,7 +230,7 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
   // MatrixXf pts2 = (T2.inverse()*inlier.block(0, 3, inlier.rows(), 3).transpose()).transpose();
   Matrix3f inv_T2 = T2.inverse();
 
-  // #pragma omp parallel for shared(Hmdlt) num_threads(6)
+  #pragma omp parallel for shared(Hmdlt) num_threads(6)
   for (int i = 0; i < GW*GH - 1; i++) {
     MatrixXf Wi(pts1.rows()*2, pts1.rows()*2);
     Wi.setZero();
@@ -243,10 +246,16 @@ void APAP(const MatrixXf &inlier, const MatrixXf &A, const Matrix3f &T1, const M
 
     // Solve for SVD
     // cout << (Wi * A).rows() << ", " << (Wi * A).cols() << endl;
-    JacobiSVD<MatrixXf, HouseholderQRPreconditioner> svd(Wi*A, ComputeFullV);
-    MatrixXf V = svd.matrixV();
-    VectorXf h = V.col(V.cols()-1);
-    Hmdlt.row(i) = unrollMatrix3f(inv_T2*rollVector9f(h)*T1);
+    if (true) {
+      JacobiSVD<MatrixXf, HouseholderQRPreconditioner> svd(Wi*A, ComputeFullV);
+      MatrixXf V = svd.matrixV();
+      VectorXf h = V.col(V.cols()-1);
+      Hmdlt.row(i) = unrollMatrix3f(inv_T2*rollVector9f(h)*T1);
+    } else {
+      VectorXf Hg(9);
+      Hg << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+      Hmdlt.row(i) = Hg;
+    }
   }
   
   warpAndFuseImageAPAP(img1, img2, Hmdlt, offX, offY, cw, ch, X, Y, img12);
@@ -269,16 +278,25 @@ long* cnpy2ptr(std::string data_fname)
   return ptr;
 }
 
-long *transform_i = cnpy2ptr("/home/shane/stitching/image_processing/transform_i_0.npy");
-long *transform_j = cnpy2ptr("/home/shane/stitching/image_processing/transform_j_0.npy");
+long *transform_i[3] = {
+  cnpy2ptr("/home/shane/stitching/image_processing/transform_i_0.npy"),
+  cnpy2ptr("/home/shane/stitching/image_processing/transform_i_2.npy"),
+  cnpy2ptr("/home/shane/stitching/image_processing/transform_i_4.npy")
+};
 
-void transform(Mat &raw, Mat &img) {
+long *transform_j[3] = {
+  cnpy2ptr("/home/shane/stitching/image_processing/transform_j_0.npy"),
+  cnpy2ptr("/home/shane/stitching/image_processing/transform_j_2.npy"),
+  cnpy2ptr("/home/shane/stitching/image_processing/transform_j_4.npy")
+};
+
+void transform(Mat &raw, Mat &img, int cam) {
   img = Mat(Size(860,860),CV_8UC3, Scalar(0, 0, 0));
-  // #pragma omp parallel for num_threads(6)
+  #pragma omp parallel for num_threads(6)
   for (int i = 0; i < 860; i++) {
     for (int j = 0; j < 860; j++) {
-      int ind_i = (int) transform_i[i * 860 + j];
-      int ind_j = (int) transform_j[i * 860 + j];
+      int ind_i = (int) transform_i[cam][i * 860 + j];
+      int ind_j = (int) transform_j[cam][i * 860 + j];
       Vec3b bgrPixel = raw.at<Vec3b>(ind_i, ind_j);
       img.at<Vec3b>(i, j) = bgrPixel;
     }
@@ -288,7 +306,7 @@ void transform(Mat &raw, Mat &img) {
 int main() {
   MatrixXf inlier, A;
   Matrix3f T1, T2;
-  Mat img1, img2, img3, img23, img123;
+  Mat img1, img2, img3, img23H, img23A, img123H, img123A;
   Mat raw1, raw2, raw3;
   int offX = 0; 
   int offY = 0; 
@@ -296,37 +314,41 @@ int main() {
   int ch = 860;
   // int offX, offY, cw, ch;
 
-  // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_7_25.jpg";
-  // const char* img2_path = "/home/shane/feature/AsProjectiveAsPossible/image/set2/u_8_25.jpg";
-  // const char* img1_path = "/home/shane/feature/AsProjectiveAsPossible/build/APAP.jpg";
-  // const char* img1_path = "/home/shane/0.jpg";
-  // const char* img2_path = "/home/shane/2.jpg";
-  // const char* img3_path = "/home/shane/4.jpg";
+  const char* img1_path = "/home/shane/0.jpg";
+  const char* img2_path = "/home/shane/camera2_test.jpg";
+  const char* img3_path = "/home/shane/camera4_test.jpg";
   displayResult = false;
   saveData = true;
 
   // raw1 = imread(img1_path);
   // raw2 = imread(img2_path);
   // raw3 = imread(img3_path);
+  // transform(raw1, img1, 0);
+  // transform(raw2, img2, 1);
+  // transform(raw3, img3, 2);
 
-  VideoCapture camera0("/home/shane/camera0.mp4"); 
-  VideoCapture camera2("/home/shane/camera2.mp4"); 
-  VideoCapture camera4("/home/shane/camera4.mp4"); 
+  // GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23H);
+  // APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23A);
+  // GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23A, img123H);
+  // APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23A, img123A);
+
+  VideoCapture camera0("/home/shane/texture0.mp4"); 
+  VideoCapture camera2("/home/shane/texture2.mp4"); 
+  VideoCapture camera4("/home/shane/texture4.mp4"); 
 
   while (camera0.isOpened() && camera2.isOpened() && camera4.isOpened()) {
     if (!camera0.read(raw1)) break;
     if (!camera2.read(raw2)) break;
     if (!camera4.read(raw3)) break;
 
-    transform(raw1, img1);
-    transform(raw2, img2);
-    transform(raw3, img3);
+    transform(raw1, img1, 0);
+    transform(raw2, img2, 1);
+    transform(raw3, img3, 2);
 
-    GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3);
-    APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23);
-    GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23);
-    APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23, img123);
-    imshow("bev", img123);
+    GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23H);
+    // APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23A);
+    GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23H, img123H);
+    imshow("bev", img123H);
     char c = waitKey(1);
     if (c == 27) break;
   }
