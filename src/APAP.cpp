@@ -174,39 +174,39 @@ void warpAndFuseImageAPAP(const Mat &img1, const Mat &img2, const MatrixXf &H, i
 
 int GlobalHomography(MatrixXf &inlier, MatrixXf &A, Matrix3f &T1, Matrix3f &T2, int &offX, int &offY, int &cw, int &ch, Mat &img1, Mat &img2, Mat &img12H) {
 
-  // int height = img1.size[0];
-  // int width = img1.size[1]; 
-  // MatrixXf match;
+  int height = img1.size[0];
+  int width = img1.size[1]; 
+  MatrixXf match;
   
-  // // detectSiftMatchWithOpenCV(img1, img2, match);
-  // // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
-  // // detectSiftMatchWithVLFeat(img1, img2, match);
-  // // detectSiftMatchWithROCm(img1, img2, match);
-  // detectORBMatchWithOpenCV(img1, img2, match);
+  // detectSiftMatchWithOpenCV(img1, img2, match);
+  // detectSiftMatchWithSiftGPU(img1_path, img2_path, match);
+  // detectSiftMatchWithVLFeat(img1, img2, match);
+  // detectSiftMatchWithROCm(img1, img2, match);
+  detectORBMatchWithOpenCV(img1, img2, match);
   
-  // normalizeMatch(match, T1, T2);
+  normalizeMatch(match, T1, T2);
 
-  // // cout << T1;
+  // cout << T1;
 
-  // singleModelRANSAC(match, 2000, inlier);
-  // // multiModelRANSAC(match, 500, inlier);
-  // Matrix3f H;
-  // fitHomography(inlier.block(0, 0, inlier.rows(), 3), inlier.block(0, 3, inlier.rows(), 3), H, A);
+  singleModelRANSAC(match, 2000, inlier);
+  // multiModelRANSAC(match, 500, inlier);
+  Matrix3f H;
+  fitHomography(inlier.block(0, 0, inlier.rows(), 3), inlier.block(0, 3, inlier.rows(), 3), H, A);
 
-  // if (displayResult) {
-  //   Mat display;
-  //   combineMat(display, img1, img2);
-  //   drawMatch(display, match, T1.inverse(), T2.inverse());
-  //   displayMat(display);
+  if (displayResult) {
+    Mat display;
+    combineMat(display, img1, img2);
+    drawMatch(display, match, T1.inverse(), T2.inverse());
+    displayMat(display);
 
-  //   combineMat(display, img1, img2);
-  //   drawMatch(display, inlier, T1.inverse(), T2.inverse());
-  //   displayMat(display);
-  // }
+    combineMat(display, img1, img2);
+    drawMatch(display, inlier, T1.inverse(), T2.inverse());
+    displayMat(display);
+  }
 
-  // Matrix3f Hg = T2.inverse()*H*T1;
-  Matrix3f Hg;
-  Hg << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+  Matrix3f Hg = T2.inverse()*H*T1;
+  // Matrix3f Hg;
+  // Hg << 1, 0, 0, 0, 1, 0, 0, 0, 1;
   warpAndFuseImage(img1, img2, Hg, offX, offY, cw, ch, img12H);
   return 0;
 }
@@ -290,13 +290,14 @@ long *transform_j[3] = {
   cnpy2ptr("/home/shane/stitching/image_processing/transform_j_4.npy")
 };
 
+int size = 860;
 void transform(Mat &raw, Mat &img, int cam) {
-  img = Mat(Size(860,860),CV_8UC3, Scalar(0, 0, 0));
+  img = Mat(Size(size,size),CV_8UC3, Scalar(0, 0, 0));
   #pragma omp parallel for num_threads(6)
-  for (int i = 0; i < 860; i++) {
-    for (int j = 0; j < 860; j++) {
-      int ind_i = (int) transform_i[cam][i * 860 + j];
-      int ind_j = (int) transform_j[cam][i * 860 + j];
+  for (int i = 0; i < size; i++) {
+    for (int j = 0; j < size; j++) {
+      int ind_i = (int) transform_i[cam][i * size + j];
+      int ind_j = (int) transform_j[cam][i * size + j];
       Vec3b bgrPixel = raw.at<Vec3b>(ind_i, ind_j);
       img.at<Vec3b>(i, j) = bgrPixel;
     }
@@ -314,11 +315,11 @@ int main() {
   int ch = 860;
   // int offX, offY, cw, ch;
 
-  const char* img1_path = "/home/shane/0.jpg";
-  const char* img2_path = "/home/shane/camera2_test.jpg";
-  const char* img3_path = "/home/shane/camera4_test.jpg";
-  displayResult = false;
-  saveData = true;
+  // const char* img1_path = "/home/shane/0.jpg";
+  // const char* img2_path = "/home/shane/2.jpg";
+  // const char* img3_path = "/home/shane/4.jpg";
+  // displayResult = false;
+  // saveData = true;
 
   // raw1 = imread(img1_path);
   // raw2 = imread(img2_path);
@@ -329,7 +330,7 @@ int main() {
 
   // GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23H);
   // APAP(inlier, A, T1, T2, offX, offY, cw, ch, img2, img3, img23A);
-  // GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23A, img123H);
+  // GlobalHomography(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23H, img123H);
   // APAP(inlier, A, T1, T2, offX, offY, cw, ch, img1, img23A, img123A);
 
   VideoCapture camera0("/home/shane/texture0.mp4"); 
@@ -358,9 +359,6 @@ int main() {
   // auto t2 = std::chrono::high_resolution_clock::now();
   // auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
   // cout << duration << endl;
-
-  
-
 
   return 0;
 }
